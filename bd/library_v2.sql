@@ -164,4 +164,22 @@ INSERT INTO libraries_users (library_id, user_id) VALUES (2, 2);
 INSERT INTO books_loans (book_id, loan_id) VALUES (1, 1);
 INSERT INTO books_loans (book_id, loan_id) VALUES (2, 2);
 
---SELECTS
+--DROP
+DROP TABLE IF EXISTS libraries_loans;
+
+--ALTER
+ALTER TABLE loans ADD COLUMN book_id INTEGER UNSIGNED;
+ALTER TABLE ADD FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--SELECT 1.
+SELECT books.title
+FROM books
+WHERE books.book_id IN(
+    SELECT books_loans.book_id
+    FROM books_loans
+    WHERE books_loans.loan_id IN (
+        SELECT loans.loan_id
+        FROM loans
+        WHERE loans.loan_date BETWEEN '2024-01-01 00:00:00' AND '2024-12-31 23:59:59'
+        )
+    );
