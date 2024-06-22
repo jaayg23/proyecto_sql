@@ -192,3 +192,7 @@ GROUP BY books.title
 ORDER BY total DESC;
 
 --SELECT 4.Get the count of books borrowed by each library
+SELECT libraries.name, COUNT(libraries_books.book_id) AS total
+FROM libraries
+JOIN libraries_books ON libraries.library_id = libraries_books.library_id   
+GROUP BY libraries.name;
