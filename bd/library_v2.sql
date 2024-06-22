@@ -183,3 +183,12 @@ WHERE books.book_id IN(
         WHERE loans.loan_date BETWEEN '2024-01-01 00:00:00' AND '2024-12-31 23:59:59'
         )
     );
+
+--SELECT 3. Get the rankig of the most borrowed books
+SELECT books.title, COUNT(books_loans.book_id) AS total
+FROM books
+JOIN books_loans ON books.book_id = books_loans.book_id
+GROUP BY books.title
+ORDER BY total DESC;
+
+--SELECT 4.Get the count of books borrowed by each library
