@@ -196,3 +196,15 @@ SELECT libraries.name, COUNT(libraries_books.book_id) AS total
 FROM libraries
 JOIN libraries_books ON libraries.library_id = libraries_books.library_id   
 GROUP BY libraries.name;
+
+--SELECT 5. Search books by author, theme or editorial
+SELECT books.title, authors.name, books.theme, books.editorial 
+FROM books
+JOIN books_authors ON books.book_id = books_authors.book_id
+JOIN authors ON books_authors.author_id = authors.author_id
+WHERE authors.name = 'Gabriel Garcia Marquez' OR books.theme = 'Fantasia' OR books.editorial = 'Santillana';
+
+--SELECT 6. Search books by specific genre
+SELECT books.title, books.genre\
+FROM books
+WHERE books.genre = 'Infantil';
