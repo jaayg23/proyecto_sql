@@ -166,10 +166,31 @@ INSERT INTO books_loans (book_id, loan_id) VALUES (2, 2);
 
 --DROP
 DROP TABLE IF EXISTS libraries_loans;
+DROP TABLE IF EXISTS books_loans;
+
+--CREATE TABLE exemplars_loans
+CREATE TABLE IF NOT EXISTS exemplars_loans (
+    call_number INTEGER UNSIGNED,
+    loan_id INTEGER UNSIGNED,
+    PRIMARY KEY (call_number, loan_id),
+    FOREIGN KEY (call_number) REFERENCES exemplars(call_number) ON DELETE NO ACTION ON UPDATE CASCADE,
+    FOREIGN KEY (loan_id) REFERENCES loans(loan_id) ON DELETE NO ACTION ON UPDATE CASCADE
+);
 
 --ALTER
 ALTER TABLE loans ADD COLUMN book_id INTEGER UNSIGNED;
 ALTER TABLE ADD FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--IMOIRTANT TO USE COMMAND "SHOW CREATE TABLE table_name" TO SEE THE FOREIGN KEYS
+ALTER TABLE detail_loans_loans DROP FOREIGN KEY detail_loans_loans_ibfk_1;
+ALTER TABLE detail_loans_loans DROP FOREIGN KEY detail_loans_loans_ibfk_2;
+ALTER TABLE detail_loans_loans ADD COLUMN call_number INTEGER UNSIGNED NOT NULL;
+ALTER TABLE detail_loans_loans DROP PRIMARY KEY;
+ALTER TABLE detail_loans_loans ADD PRIMARY KEY (detail_id, loan_id, call_number);
+
+ALTER TABLE detail_loans_loans ADD FOREIGN KEY (loan_id) REFERENCES exemplars_loans(loan_id) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE detail_loans_loans ADD FOREIGN KEY (call_number) REFERENCES exemplars_loans(call_number) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE detail_loans_loans ADD FOREIGN KEY (detail_id) REFERENCES detail_loans(detail_id) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --SELECT 1.
 SELECT books.title
